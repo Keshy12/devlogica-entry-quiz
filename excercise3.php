@@ -1,41 +1,30 @@
 <?php
 function convertTemperature($value, $fromUnit, $toUnit): float {
     $validUnits = ['C', 'F', 'K'];
+    
+    $convertionTable = [
+        "C" => [
+            "C" => function($value) { return $value; }, 
+            "F" => function($value) { return ($value * 9/5) + 32; }, 
+            "K" => function($value) { return $value + 273.15; }, 
+        ],
+        "F" => [
+            "C" => function($value) { return ($value - 32) * 5/9; }, 
+            "F" => function($value) { return $value; }, 
+            "K" => function($value) { return ($value - 32) * 5/9 + 273.15; }, 
+        ],
+        "K" => [
+            "C" => function($value) { return $value - 273.15; }, 
+            "F" => function($value) { return ($value - 273.15) * 9/5 + 32; }, 
+            "K" => function($value) { return $value; }, 
+        ],
 
+    ];
     if (!in_array($fromUnit, $validUnits) || !in_array($toUnit, $validUnits)) {
         throw new InvalidArgumentException("Invalid temperature unit. Use 'C' for Celsius, 'F' for Fahrenheit, or 'K' for Kelvin.");
     }
 
-    if ($fromUnit === $toUnit) {
-        return round($value, 2);
-    }
-
-    switch ($fromUnit) {
-        case 'C':
-            if ($toUnit === 'F') {
-                $result = ($value * 9/5) + 32;
-            } 
-            elseif ($toUnit === 'K') {
-                $result = $value + 273.15;
-            }
-            break;
-        case 'F':
-            if ($toUnit === 'C') {
-                $result = ($value - 32) * 5/9;
-            } elseif ($toUnit === 'K') {
-                $result = ($value - 32) * 5/9 + 273.15;
-            }
-            break;
-        case 'K':
-            if ($toUnit === 'C') {
-                $result = $value - 273.15;
-            } elseif ($toUnit === 'F') {
-                $result = ($value - 273.15) * 9/5 + 32;
-            }
-            break;
-    }
-
-    return round($result, 2);
+    return round($convertionTable[$fromUnit][$toUnit]($value), 2);
 }
 
 echo convertTemperature(0, 'C', 'F');
