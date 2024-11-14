@@ -1,7 +1,5 @@
 <?php
-function convertTemperature($value, $fromUnit, $toUnit): float {
-    $validUnits = ['C', 'F', 'K'];
-    
+function convertTemperature($value, $fromUnit, $toUnit): float {  
     $convertionTable = [
         "C" => [
             "C" => function($value) { return $value; }, 
@@ -20,7 +18,7 @@ function convertTemperature($value, $fromUnit, $toUnit): float {
         ],
 
     ];
-    if (!in_array($fromUnit, $validUnits) || !in_array($toUnit, $validUnits)) {
+    if (!isset($convertionTable[$fromUnit][$toUnit])) {
         throw new InvalidArgumentException("Invalid temperature unit. Use 'C' for Celsius, 'F' for Fahrenheit, or 'K' for Kelvin.");
     }
 
