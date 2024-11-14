@@ -14,6 +14,7 @@ $data = [
 /**
 * Might hit recursion depth limit.
 * Depending on the input data, iterative approach might be better.
+* Used array_reduce as I find it readable. Could've used foreach loop.
 */
 function calculateDirectorySize($data): int {
     $size = array_reduce($data, function($carry, $item) {
