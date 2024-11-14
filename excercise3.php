@@ -15,9 +15,9 @@ function convertTemperature($value, $fromUnit, $toUnit): float {
             "C" => function($value) { return $value - 273.15; }, 
             "F" => function($value) { return ($value - 273.15) * 9/5 + 32; }, 
             "K" => function($value) { return $value; }, 
-        ],
-
+        ]
     ];
+    
     if (!isset($convertionTable[$fromUnit][$toUnit])) {
         throw new InvalidArgumentException("Invalid temperature unit. Use 'C' for Celsius, 'F' for Fahrenheit, or 'K' for Kelvin.");
     }
